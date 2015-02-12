@@ -3,6 +3,9 @@
 This Laravel 5 package provides a `FoundationPresenter` class for generating
 Foundation-themed pagination in your applications.
 
+This will probably not work with Laravel 4. For the Laravel 4 version see the 
+original project: https://github.com/binarix/Laravel-Foundation-Pagination
+
 ## Installation
 
 This release v2.0.0 supports the following (stable) versions of Laravel:
