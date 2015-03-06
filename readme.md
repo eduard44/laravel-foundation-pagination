@@ -28,7 +28,7 @@ Next, update Composer from the Terminal:
 
 Since Laravel 5.0.7, we can replace the built-in bootstrap presenter this way:
 
-```
+```php
 use Chromabits\Pagination\FoundationPresenter;
 
 // To be set in a service provider or wherever
