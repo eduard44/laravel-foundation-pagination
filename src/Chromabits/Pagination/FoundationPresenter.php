@@ -1,18 +1,33 @@
 <?php
 
+/**
+ * Copyright 2015, Eduardo Trujillo <ed@chromabits.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This file is part of the Laravel Foundation Pagination package
+ */
+
 namespace Chromabits\Pagination;
 
-use Illuminate\Contracts\Pagination\Presenter;
+use Chromabits\Nucleus\Foundation\BaseObject;
+use Chromabits\Nucleus\Support\Std;
+use Chromabits\Nucleus\View\Common\ListItem;
+use Chromabits\Nucleus\View\Head\Link;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
+use Illuminate\Contracts\Pagination\Presenter;
 use Illuminate\Pagination\UrlWindow;
 use Illuminate\Pagination\UrlWindowPresenterTrait;
 
 /**
- * Class FoundationPresenter
+ * Class FoundationPresenter.
  *
- * @package Chromabits\FoundationPagination
+ * @author Eduardo Trujillo <ed@chromabits.com>
+ * @package Chromabits\Pagination
  */
-class FoundationPresenter implements Presenter
+class FoundationPresenter extends BaseObject implements Presenter
 {
     use FoundationNextPreviousRendererTrait, UrlWindowPresenterTrait;
 
@@ -30,19 +45,30 @@ class FoundationPresenter implements Presenter
      */
     protected $window;
 
+    protected $currentPage;
+
     /**
-     * Construct an instance of a FoundationPresenter
+     * Construct an instance of a FoundationPresenter.
      *
-     * @param  \Illuminate\Contracts\Pagination\Paginator $paginator
-     * @param  \Illuminate\Pagination\UrlWindow|null $window
+     * @param Paginator $paginator
+     * @param UrlWindow|null $window
      */
     public function __construct(
         PaginatorContract $paginator,
         UrlWindow $window = null
     ) {
+        parent::__construct();
+
         $this->paginator = $paginator;
-        $this->window =
-            is_null($window) ? UrlWindow::make($paginator) : $window->get();
+        $this->window = Std::firstBias(
+                is_null($window),
+            function () use ($paginator) {
+                UrlWindow::make($paginator);
+            },
+            function () use ($window) {
+                $window->get();
+            }
+        );
     }
 
     /**
@@ -62,8 +88,7 @@ class FoundationPresenter implements Presenter
      */
     public function render()
     {
-        if ($this->hasPages())
-        {
+        if ($this->hasPages()) {
             return sprintf(
                 '<ul class="pagination">%s %s %s</ul>',
                 $this->getPreviousButton(),
@@ -78,25 +103,25 @@ class FoundationPresenter implements Presenter
     /**
      * Create a range of pagination links.
      *
-     * @param  int  $start
-     * @param  int  $end
+     * @param  int $start
+     * @param  int $end
+     *
      * @return string
      */
     public function getPageRange($start, $end)
     {
         $pages = [];
 
-        for ($page = $start; $page <= $end; $page++)
-        {
-            // If the current page is equal to the page we're iterating on, we will create a
-            // disabled link for that page. Otherwise, we can create a typical active one
-            // for the link. These views use the "Twitter Bootstrap" styles by default.
-            if ($this->currentPage == $page)
-            {
-                $pages[] = '<li class="current"><a href="#">'.$page.'</a></li>';
-            }
-            else
-            {
+        for ($page = $start; $page <= $end; $page++) {
+            // If the current page is equal to the page we're iterating on, we
+            // will create a disabled link for that page. Otherwise, we can
+            // create a typical active one for the link.
+            if ($this->currentPage == $page) {
+                $pages[] = (new ListItem(['class' => 'current'], new Link(
+                    ['href' => '#'],
+                    $page
+                )))->render();
+            } else {
                 $pages[] = $this->getLink($page);
             }
         }
@@ -107,38 +132,44 @@ class FoundationPresenter implements Presenter
     /**
      * Get HTML wrapper for an available page link.
      *
-     * @param  string  $url
-     * @param  int  $page
-     * @param  string|null  $rel
+     * @param  string $url
+     * @param  int $page
+     * @param  string|null $rel
+     *
      * @return string
      */
     protected function getAvailablePageWrapper($url, $page, $rel = null)
     {
-        $rel = is_null($rel) ? '' : ' rel="'.$rel.'"';
-
-        return '<li><a href="'.$url.'"'.$rel.'>'.$page.'</a></li>';
+        return (new ListItem([], new Link([
+            'href' => $url,
+            'rel' => $rel,
+        ], $page)))->render();
     }
 
     /**
      * Get HTML wrapper for disabled text.
      *
-     * @param  string  $text
+     * @param  string $text
+     *
      * @return string
      */
     protected function getDisabledTextWrapper($text)
     {
-        return '<li class="unavailable"><a>'.$text.'</a></li>';
+        return (new ListItem(['class' => 'unavailable'], new Link([], $text)))
+            ->render();
     }
 
     /**
      * Get HTML wrapper for active text.
      *
-     * @param  string  $text
+     * @param  string $text
+     *
      * @return string
      */
     protected function getActivePageWrapper($text)
     {
-        return '<li class="current"><a>'.$text.'</a></li>';
+        return (new ListItem(['class' => 'current'], new Link([], $text)))
+            ->render();
     }
 
     /**
