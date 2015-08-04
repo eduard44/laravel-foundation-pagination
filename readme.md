@@ -26,9 +26,19 @@ Next, update Composer from the Terminal:
 
 ## Usage
 
-Laravel 5 does not provide an easy mechanism for replacing the built-in
-Bootstrap presenter; This means that you need to manually instantiate the
-presenter every time you wish to render pagination:
+Since Laravel 5.0.7, we can replace the built-in bootstrap presenter this way:
+
+```php
+use Chromabits\Pagination\FoundationPresenter;
+
+// To be set in a service provider or wherever
+Paginator::presenter(function($paginator)
+{
+    return new FoundationPresenter($paginator);
+});
+```
+
+If you wish to replace it manually, you have to instantiate the presenter every time you wish to render pagination:
 
 ```php
 use App\Models\Post;
