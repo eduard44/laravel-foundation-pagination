@@ -12,9 +12,11 @@
 namespace Chromabits\Pagination;
 
 use Chromabits\Nucleus\Foundation\BaseObject;
+use Chromabits\Nucleus\Support\Html;
 use Chromabits\Nucleus\Support\Std;
 use Chromabits\Nucleus\View\Common\Anchor;
 use Chromabits\Nucleus\View\Common\ListItem;
+use Chromabits\Nucleus\View\SafeHtmlWrapper;
 use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
 use Illuminate\Contracts\Pagination\Presenter;
 use Illuminate\Pagination\UrlWindow;
@@ -174,11 +176,11 @@ class FoundationPresenter extends BaseObject implements Presenter
     /**
      * Get a pagination "dot" element.
      *
-     * @return string
+     * @return string|SafeHtmlWrapper
      */
     public function getDots()
     {
-        return $this->getDisabledTextWrapper('&hellip;');
+        return $this->getDisabledTextWrapper(Html::safe('&hellip;'));
     }
 
     /**

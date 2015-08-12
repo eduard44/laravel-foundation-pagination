@@ -11,6 +11,8 @@
 
 namespace Chromabits\Pagination;
 
+use Chromabits\Nucleus\Support\Html;
+use Chromabits\Nucleus\Support\Std;
 use Chromabits\Nucleus\View\Common\Anchor;
 use Chromabits\Nucleus\View\Common\ListItem;
 
@@ -29,7 +31,7 @@ trait FoundationNextPreviousRendererTrait
      *
      * @return string
      */
-    public function getPreviousButton($text = '&laquo;')
+    public function getPreviousButton($text = null)
     {
         // If the current page is less than or equal to one, it means we can't
         // go any further back in the pages, so we will render a disabled
@@ -38,14 +40,14 @@ trait FoundationNextPreviousRendererTrait
         if ($this->paginator->currentPage() <= 1) {
             return (new ListItem(
                 ['class' => 'arrow unavailable'],
-                new Anchor([], $text)
+                new Anchor([], Std::coalesce($text, Html::safe('&laquo;')))
             ))->render();
         } else {
             $url = $this->paginator->previousPageUrl();
 
             return (new ListItem(['class' => 'arrow'], new Anchor(
                 ['href' => $url],
-                $text
+                Std::coalesce($text, Html::safe('&laquo;'))
             )))->render();
         }
     }
@@ -57,7 +59,7 @@ trait FoundationNextPreviousRendererTrait
      *
      * @return string
      */
-    public function getNextButton($text = '&raquo;')
+    public function getNextButton($text = null)
     {
         // If the current page is greater than or equal to the last page, it
         // means we can't go any further into the pages, as we're already on
@@ -66,7 +68,10 @@ trait FoundationNextPreviousRendererTrait
         if (!$this->paginator->hasMorePages()) {
             return (new ListItem(
                 ['class' => 'arrow unavailable'],
-                new Anchor([], $text)
+                new Anchor(
+                    [],
+                    Std::coalesce($text, Html::safe('&raquo;'))
+                )
             ))->render();
         }
 
@@ -74,7 +79,10 @@ trait FoundationNextPreviousRendererTrait
 
         return (new ListItem(
                 ['class' => 'arrow'],
-                new Anchor(['href' => $url], $text)
+                new Anchor(
+                    ['href' => $url],
+                    Std::coalesce($text, Html::safe('&raquo;'))
+                )
             ))->render();
     }
 }
