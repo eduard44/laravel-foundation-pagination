@@ -11,8 +11,8 @@
 
 namespace Chromabits\Pagination;
 
+use Chromabits\Nucleus\View\Common\Anchor;
 use Chromabits\Nucleus\View\Common\ListItem;
-use Chromabits\Nucleus\View\Head\Link;
 
 /**
  * Trait FoundationNextPreviousRendererTrait.
@@ -38,12 +38,12 @@ trait FoundationNextPreviousRendererTrait
         if ($this->paginator->currentPage() <= 1) {
             return (new ListItem(
                 ['class' => 'arrow unavailable'],
-                new Link([], $text)
+                new Anchor([], $text)
             ))->render();
         } else {
             $url = $this->paginator->previousPageUrl();
 
-            return (new ListItem(['class' => 'arrow'], new Link(
+            return (new ListItem(['class' => 'arrow'], new Anchor(
                 ['href' => $url],
                 $text
             )))->render();
@@ -66,7 +66,7 @@ trait FoundationNextPreviousRendererTrait
         if (!$this->paginator->hasMorePages()) {
             return (new ListItem(
                 ['class' => 'arrow unavailable'],
-                new Link([], $text)
+                new Anchor([], $text)
             ))->render();
         }
 
@@ -74,7 +74,7 @@ trait FoundationNextPreviousRendererTrait
 
         return (new ListItem(
                 ['class' => 'arrow'],
-                new Link(['href' => $url], $text)
+                new Anchor(['href' => $url], $text)
             ))->render();
     }
 }

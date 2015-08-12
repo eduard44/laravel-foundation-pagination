@@ -13,9 +13,8 @@ namespace Chromabits\Pagination;
 
 use Chromabits\Nucleus\Foundation\BaseObject;
 use Chromabits\Nucleus\Support\Std;
+use Chromabits\Nucleus\View\Common\Anchor;
 use Chromabits\Nucleus\View\Common\ListItem;
-use Chromabits\Nucleus\View\Head\Link;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
 use Illuminate\Contracts\Pagination\Presenter;
 use Illuminate\Pagination\UrlWindow;
@@ -50,7 +49,7 @@ class FoundationPresenter extends BaseObject implements Presenter
     /**
      * Construct an instance of a FoundationPresenter.
      *
-     * @param Paginator $paginator
+     * @param PaginatorContract $paginator
      * @param UrlWindow|null $window
      */
     public function __construct(
@@ -117,7 +116,7 @@ class FoundationPresenter extends BaseObject implements Presenter
             // will create a disabled link for that page. Otherwise, we can
             // create a typical active one for the link.
             if ($this->currentPage == $page) {
-                $pages[] = (new ListItem(['class' => 'current'], new Link(
+                $pages[] = (new ListItem(['class' => 'current'], new Anchor(
                     ['href' => '#'],
                     $page
                 )))->render();
@@ -140,7 +139,7 @@ class FoundationPresenter extends BaseObject implements Presenter
      */
     protected function getAvailablePageWrapper($url, $page, $rel = null)
     {
-        return (new ListItem([], new Link([
+        return (new ListItem([], new Anchor([
             'href' => $url,
             'rel' => $rel,
         ], $page)))->render();
@@ -155,7 +154,7 @@ class FoundationPresenter extends BaseObject implements Presenter
      */
     protected function getDisabledTextWrapper($text)
     {
-        return (new ListItem(['class' => 'unavailable'], new Link([], $text)))
+        return (new ListItem(['class' => 'unavailable'], new Anchor([], $text)))
             ->render();
     }
 
@@ -168,7 +167,7 @@ class FoundationPresenter extends BaseObject implements Presenter
      */
     protected function getActivePageWrapper($text)
     {
-        return (new ListItem(['class' => 'current'], new Link([], $text)))
+        return (new ListItem(['class' => 'current'], new Anchor([], $text)))
             ->render();
     }
 
