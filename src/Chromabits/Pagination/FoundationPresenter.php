@@ -80,7 +80,7 @@ class FoundationPresenter extends SimpleFoundationPresenter
                 Html::safe($this->getPreviousButton()),
                 Html::safe($this->getLinks()),
                 Html::safe($this->getNextButton()),
-            ]));
+            ]))->render();
         }
 
         return '';

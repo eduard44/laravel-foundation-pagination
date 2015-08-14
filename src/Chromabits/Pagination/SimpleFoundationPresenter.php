@@ -61,7 +61,7 @@ class SimpleFoundationPresenter extends BaseObject implements
             return (new UnorderedList(['class' => 'pagination'], [
                 Html::safe($this->getPreviousButton()),
                 Html::safe($this->getNextButton()),
-            ]));
+            ]))->render();
         }
 
         return '';
