@@ -1,23 +1,28 @@
 {
-    "name": "eduard44/foundation-pagination",
-    "description": "ZURB Foundation pagination slider for Laravel 5",
-    "authors": [
-        {
-            "name": "Eduardo Trujillo",
-            "email": "ed@chromabits.com"
-        }
-    ],
-    "license": "MIT",
-    "require": {
-        "php": ">=5.3.0",
-        "illuminate/pagination": "~5.0",
-        "illuminate/contracts": "~5.0",
-        "illuminate/support": "~5.0",
-        "chromabits/nucleus": "0.3.x-dev@dev"
-    },
-    "autoload": {
-        "psr-4": {
-            "Chromabits\\Pagination\\": "src/Chromabits/Pagination"
-        }
+  "name": "eduard44/foundation-pagination",
+  "description": "ZURB Foundation pagination slider for Laravel 5",
+  "authors": [
+    {
+      "name": "Eduardo Trujillo",
+      "email": "ed@chromabits.com"
     }
+  ],
+  "license": "MIT",
+  "require": {
+    "php": ">=5.3.0",
+    "illuminate/pagination": "~5.0",
+    "illuminate/contracts": "~5.0",
+    "illuminate/support": "~5.0",
+    "chromabits/nucleus": "0.3.x-dev@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "Chromabits\\Pagination\\": "src/Chromabits/Pagination"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "3.0-dev"
+    }
+  }
 }
