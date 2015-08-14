@@ -20,7 +20,9 @@ the same function as it's Bootstrap counterpart in Laravel
 
 ## Installation
 
-> WARNING: Version v3.0.0 hasn't been released yet. The instructions below might not work properly. For a stable release, please use [v2.0.0](https://github.com/etcinit/laravel-foundation-pagination/tree/2.0.0).
+> WARNING: Version v3.0.0 hasn't been released yet. The instructions below might
+not work properly. For a stable release, please use
+[v2.0.0](https://github.com/etcinit/laravel-foundation-pagination/tree/2.0.0).
 
 The current release (v3.0.0) supports the following versions of
 Laravel, Lumen and Illuminated:
@@ -54,7 +56,8 @@ Paginator::presenter(function($paginator)
 });
 ```
 
-If you wish to replace it manually, you have to instantiate the presenter every time you wish to render pagination:
+If you wish to replace it manually, you have to instantiate the presenter every
+ time you wish to render pagination:
 
 ```php
 use App\Models\Post;
@@ -66,4 +69,4 @@ $html = $paginator->render(new FoundationPresenter($paginator));
 ```
 
 For more information on Pagination with Laravel 5, please check out the docs at
-http://laravel.com/docs/pagination
+ http://laravel.com/docs/pagination
