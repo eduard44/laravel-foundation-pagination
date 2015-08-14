@@ -11,15 +11,11 @@
 
 namespace Chromabits\Pagination;
 
-use Chromabits\Nucleus\Exceptions\CoreException;
-use Chromabits\Nucleus\Foundation\BaseObject;
 use Chromabits\Nucleus\Support\Html;
 use Chromabits\Nucleus\Support\Std;
 use Chromabits\Nucleus\View\Common\Anchor;
 use Chromabits\Nucleus\View\Common\ListItem;
 use Chromabits\Nucleus\View\Common\UnorderedList;
-use Chromabits\Nucleus\View\Interfaces\RenderableInterface;
-use Chromabits\Nucleus\View\Interfaces\SafeHtmlProducerInterface;
 use Chromabits\Nucleus\View\SafeHtmlWrapper;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\UrlWindow;
@@ -104,7 +100,7 @@ class FoundationPresenter extends SimpleFoundationPresenter
         return (new ListItem([], new Anchor([
             'href' => $url,
             'rel' => $rel,
-        ], $page)))->render();
+        ], (string) $page)))->render();
     }
 
     /**
@@ -118,7 +114,7 @@ class FoundationPresenter extends SimpleFoundationPresenter
     {
         return (new ListItem(
             ['class' => 'unavailable'],
-            new Anchor([], $text))
+            new Anchor([], (string) $text))
         )->render();
     }
 
@@ -133,7 +129,7 @@ class FoundationPresenter extends SimpleFoundationPresenter
     {
         return (new ListItem(
             ['class' => 'current'],
-            new Anchor([], $text))
+            new Anchor([], (string) $text))
         )->render();
     }
 
