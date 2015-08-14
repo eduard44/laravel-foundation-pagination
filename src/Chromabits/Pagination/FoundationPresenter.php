@@ -11,14 +11,17 @@
 
 namespace Chromabits\Pagination;
 
+use Chromabits\Nucleus\Exceptions\CoreException;
 use Chromabits\Nucleus\Foundation\BaseObject;
 use Chromabits\Nucleus\Support\Html;
 use Chromabits\Nucleus\Support\Std;
 use Chromabits\Nucleus\View\Common\Anchor;
 use Chromabits\Nucleus\View\Common\ListItem;
+use Chromabits\Nucleus\View\Common\UnorderedList;
+use Chromabits\Nucleus\View\Interfaces\RenderableInterface;
+use Chromabits\Nucleus\View\Interfaces\SafeHtmlProducerInterface;
 use Chromabits\Nucleus\View\SafeHtmlWrapper;
-use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
-use Illuminate\Contracts\Pagination\Presenter;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\UrlWindow;
 use Illuminate\Pagination\UrlWindowPresenterTrait;
 
@@ -28,14 +31,14 @@ use Illuminate\Pagination\UrlWindowPresenterTrait;
  * @author Eduardo Trujillo <ed@chromabits.com>
  * @package Chromabits\Pagination
  */
-class FoundationPresenter extends BaseObject implements Presenter
+class FoundationPresenter extends SimpleFoundationPresenter
 {
     use FoundationNextPreviousRendererTrait, UrlWindowPresenterTrait;
 
     /**
      * The paginator implementation.
      *
-     * @var \Illuminate\Contracts\Pagination\Paginator
+     * @var LengthAwarePaginator
      */
     protected $paginator;
 
@@ -46,40 +49,27 @@ class FoundationPresenter extends BaseObject implements Presenter
      */
     protected $window;
 
-    protected $currentPage;
-
     /**
      * Construct an instance of a FoundationPresenter.
      *
-     * @param PaginatorContract $paginator
+     * @param LengthAwarePaginator $paginator
      * @param UrlWindow|null $window
      */
     public function __construct(
-        PaginatorContract $paginator,
+        LengthAwarePaginator $paginator,
         UrlWindow $window = null
     ) {
-        parent::__construct();
+        parent::__construct($paginator);
 
-        $this->paginator = $paginator;
         $this->window = Std::firstBias(
-                is_null($window),
+            is_null($window),
             function () use ($paginator) {
-                UrlWindow::make($paginator);
+                return UrlWindow::make($paginator);
             },
             function () use ($window) {
-                $window->get();
+                return $window->get();
             }
         );
-    }
-
-    /**
-     * Determine if the underlying paginator being presented has pages to show.
-     *
-     * @return bool
-     */
-    public function hasPages()
-    {
-        return $this->paginator->hasPages();
     }
 
     /**
@@ -90,52 +80,22 @@ class FoundationPresenter extends BaseObject implements Presenter
     public function render()
     {
         if ($this->hasPages()) {
-            return sprintf(
-                '<ul class="pagination">%s %s %s</ul>',
-                $this->getPreviousButton(),
-                $this->getLinks(),
-                $this->getNextButton()
-            );
+            return (new UnorderedList(['class' => 'pagination'], [
+                Html::safe($this->getPreviousButton()),
+                Html::safe($this->getLinks()),
+                Html::safe($this->getNextButton()),
+            ]));
         }
 
         return '';
     }
 
     /**
-     * Create a range of pagination links.
-     *
-     * @param  int $start
-     * @param  int $end
-     *
-     * @return string
-     */
-    public function getPageRange($start, $end)
-    {
-        $pages = [];
-
-        for ($page = $start; $page <= $end; $page++) {
-            // If the current page is equal to the page we're iterating on, we
-            // will create a disabled link for that page. Otherwise, we can
-            // create a typical active one for the link.
-            if ($this->currentPage == $page) {
-                $pages[] = (new ListItem(['class' => 'current'], new Anchor(
-                    ['href' => '#'],
-                    $page
-                )))->render();
-            } else {
-                $pages[] = $this->getLink($page);
-            }
-        }
-
-        return implode('', $pages);
-    }
-
-    /**
      * Get HTML wrapper for an available page link.
      *
-     * @param  string $url
-     * @param  int $page
-     * @param  string|null $rel
+     * @param string $url
+     * @param int $page
+     * @param string|null $rel
      *
      * @return string
      */
@@ -150,27 +110,31 @@ class FoundationPresenter extends BaseObject implements Presenter
     /**
      * Get HTML wrapper for disabled text.
      *
-     * @param  string $text
+     * @param string $text
      *
      * @return string
      */
     protected function getDisabledTextWrapper($text)
     {
-        return (new ListItem(['class' => 'unavailable'], new Anchor([], $text)))
-            ->render();
+        return (new ListItem(
+            ['class' => 'unavailable'],
+            new Anchor([], $text))
+        )->render();
     }
 
     /**
      * Get HTML wrapper for active text.
      *
-     * @param  string $text
+     * @param string $text
      *
      * @return string
      */
     protected function getActivePageWrapper($text)
     {
-        return (new ListItem(['class' => 'current'], new Anchor([], $text)))
-            ->render();
+        return (new ListItem(
+            ['class' => 'current'],
+            new Anchor([], $text))
+        )->render();
     }
 
     /**
@@ -184,16 +148,6 @@ class FoundationPresenter extends BaseObject implements Presenter
     }
 
     /**
-     * Get the current page from the paginator.
-     *
-     * @return int
-     */
-    protected function currentPage()
-    {
-        return $this->paginator->currentPage();
-    }
-
-    /**
      * Get the last page from the paginator.
      *
      * @return int
@@ -201,5 +155,15 @@ class FoundationPresenter extends BaseObject implements Presenter
     protected function lastPage()
     {
         return $this->paginator->lastPage();
+    }
+
+    /**
+     * Determine if the underlying paginator being presented has pages to show.
+     *
+     * @return bool
+     */
+    public function hasPages()
+    {
+        return $this->paginator->hasPages();
     }
 }

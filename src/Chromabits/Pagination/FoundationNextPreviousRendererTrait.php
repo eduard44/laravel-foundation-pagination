@@ -27,7 +27,7 @@ trait FoundationNextPreviousRendererTrait
     /**
      * Get the previous page pagination element.
      *
-     * @param  string $text
+     * @param string $text
      *
      * @return string
      */
@@ -36,7 +36,7 @@ trait FoundationNextPreviousRendererTrait
         // If the current page is less than or equal to one, it means we can't
         // go any further back in the pages, so we will render a disabled
         // previous button when that is the case. Otherwise, we will give it an
-        //active "status".
+        // active "status".
         if ($this->paginator->currentPage() <= 1) {
             return (new ListItem(
                 ['class' => 'arrow unavailable'],
@@ -55,7 +55,7 @@ trait FoundationNextPreviousRendererTrait
     /**
      * Get the next page pagination element.
      *
-     * @param  string $text
+     * @param string $text
      *
      * @return string
      */

@@ -3,26 +3,42 @@
 This Laravel 5 package provides a `FoundationPresenter` class for generating
 Foundation-themed pagination in your applications.
 
-This will probably not work with Laravel 4. For the Laravel 4 version see the 
+This will probably not work with Laravel 4. For the Laravel 4 version see the
 original project: https://github.com/binarix/Laravel-Foundation-Pagination
+
+## Changes
+
+**v3.0.0**: Mainly cleaning up the code in general: Instead of relying on things
+ like string concatenation or `sprintf`, the library now uses
+ `etcinit/nucleus`'s view component, which takes care of properly escaping the
+ HTML output of the paginator when needed.
+
+Additionally, a `SimpleFoundationPresenter` class is now available. It performs
+the same function as it's Bootstrap counterpart in Laravel
+
+**v2.0.0**: Adds support for Laravel 5.
 
 ## Installation
 
-This release v2.0.0 supports the following (stable) versions of Laravel:
-        "laravel/framework": "5.0.*"
+> WARNING: Version v3.0.0 hasn't been released yet. The instructions below might not work properly. For a stable release, please use [v2.0.0](https://github.com/etcinit/laravel-foundation-pagination/tree/2.0.0).
 
-Begin by installing this package through Composer. Edit your project's 
-`composer.json` file to require `eduard44/foundation-pagination`:
+The current release (v3.0.0) supports the following versions of
+Laravel, Lumen and Illuminated:
 
 ```json
-    "require": {
-        "eduard44/foundation-pagination": "2.0.*"
-    }
+    "laravel/framework": "~5.0",
+    "laravel/framework": "~5.1",
+    "lumen/framework": "~5.0",
+    "lumen/framework": "~5.1",
+    "chromabits/illuminated": "dev-master",
 ```
 
-Next, update Composer from the Terminal:
+To include in in your project, simple use `composer`:
 
-    composer update
+```sh
+$ cd /path/to/project
+$ composer require chromabits/foundation-pagination
+```
 
 ## Usage
 
