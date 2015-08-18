@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "831d996af8bf7f534f1a50c01e023b95",
+    "hash": "10b104cbee89114959e29d28f7ebe27b",
     "packages": [
         {
             "name": "chromabits/nucleus",
-            "version": "dev-master",
+            "version": "v0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/etcinit/nucleus.git",
-                "reference": "170d69e24f079b2d285a9fa5d6bb00ae37d1b9c7"
+                "reference": "58381c3d9746e0a16acdfb4b1f084a0434fe79fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/etcinit/nucleus/zipball/170d69e24f079b2d285a9fa5d6bb00ae37d1b9c7",
-                "reference": "170d69e24f079b2d285a9fa5d6bb00ae37d1b9c7",
+                "url": "https://api.github.com/repos/etcinit/nucleus/zipball/58381c3d9746e0a16acdfb4b1f084a0434fe79fd",
+                "reference": "58381c3d9746e0a16acdfb4b1f084a0434fe79fd",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
                 }
             ],
             "description": "Some core PHP utilities",
-            "time": "2015-08-12 22:47:11"
+            "time": "2015-08-18 15:42:19"
         },
         {
             "name": "danielstjules/stringy",
@@ -361,9 +361,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "chromabits/nucleus": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

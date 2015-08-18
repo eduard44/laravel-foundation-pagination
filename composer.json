@@ -13,7 +13,7 @@
     "illuminate/pagination": "~5.0",
     "illuminate/contracts": "~5.0",
     "illuminate/support": "~5.0",
-    "chromabits/nucleus": "0.3.x-dev@dev"
+    "chromabits/nucleus": "0.3.0"
   },
   "autoload": {
     "psr-4": {
